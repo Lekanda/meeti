@@ -16,6 +16,13 @@ app.set('views', path.join(__dirname, './views'));
 /***********Archivos Estaticos**************/
 app.use(express.static('public'));
 
+/****Mi Middleware(usuario logeado, flash mss, fecha actual)****/
+app.use((req,res,next) => {
+    const fecha = new Date();
+    res.locals.year = fecha.getFullYear();
+    next();
+});
+
 /*************Rutas*****************/
 app.use('/', routes());
 

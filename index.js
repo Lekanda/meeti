@@ -3,6 +3,10 @@ const routes = require('./routes');
 const path = require ('path');
 const expressLayouts = require('express-ejs-layouts');
 const bodyParser = require('body-parser');
+const flash = require('connect-flash');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+
 
 
 // Configuracion para la DB
@@ -16,12 +20,15 @@ db.sync()
  // Path para variables.env   
 require('dotenv').config({path: 'variables.env'});
 
+
 // Instanciar Express en app
 const app = express();
+
 
 // BodyParser para leer formularios
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+
 
 /****Habilitar EJS como Template Engine*******/
 app.use(expressLayouts);
@@ -29,15 +36,32 @@ app.set('view engine', 'ejs');
 // Ubicacion Vistas
 app.set('views', path.join(__dirname, './views'));
 
+
 /***********Archivos Estaticos**************/
 app.use(express.static('public'));
 
+
+/***********Habilitar Cookie-Parser**************/
+app.use(cookieParser());
+/***********Habilitar Express-Session************/
+app.use(session({
+    secret: process.env.SECRETO,
+    key: process.env.KEY,
+    resave: false,
+    saveUninitialized : false
+}));
+/***********Connect-Flash**************/
+app.use(flash());
+
+
 /****Mi Middleware(usuario logeado, flash mss, fecha actual)****/
 app.use((req,res,next) => {
+    res.locals.mensajes = req.flash();
     const fecha = new Date();
     res.locals.year = fecha.getFullYear();
     next();
 });
+
 
 /*************Rutas*****************/
 app.use('/', routes());

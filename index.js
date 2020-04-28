@@ -2,19 +2,26 @@ const express = require('express');
 const routes = require('./routes');
 const path = require ('path');
 const expressLayouts = require('express-ejs-layouts');
+const bodyParser = require('body-parser');
 
 
 // Configuracion para la DB
 const db = require('./config/db');
+require('./models/Usuarios');
 db.sync()
     .then(() => console.log('Conectado a la DB'))
-    .catch(error => console.log(error))
+    .catch(error => console.log(error));
 
 
  // Path para variables.env   
 require('dotenv').config({path: 'variables.env'});
 
+// Instanciar Express en app
 const app = express();
+
+// BodyParser para leer formularios
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 /****Habilitar EJS como Template Engine*******/
 app.use(expressLayouts);
@@ -37,5 +44,5 @@ app.use('/', routes());
 
 /*********Puerto de escucha************/
 app.listen(process.env.PORT, () => {
-    console.log('Express en Marcha');
+    console.log('Servidor Express en Marcha');
 });

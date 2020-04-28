@@ -9,5 +9,9 @@ module.exports = new Sequelize('meeti', 'postgres', 'root', {
         min: 0,
         acquire: 30000,
         idle: 10000
-    }
+    },
+    define: {
+        timestamps: true// Quita campos creados automaticamente(false), true los deja
+    },
+    logging: false // Quita mensajes SQL de la consola
 });

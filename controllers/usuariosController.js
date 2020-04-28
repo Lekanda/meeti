@@ -19,7 +19,10 @@ exports.crearNuevaCuenta = async (req,res) => {
         res.redirect('/iniciar-sesion');
 
     } catch (error) {
-        console.log(error);
+        // console.log(error.errors);
+        const erroresSequelize = error.errors.map(err => err.message);
+        // console.log(erroresSequelize);
+        req.flash('error', erroresSequelize);
         res.redirect('/crear-cuenta');
 
     }

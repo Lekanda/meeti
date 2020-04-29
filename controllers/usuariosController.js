@@ -1,5 +1,6 @@
 const Usuarios = require('../models/Usuarios');
 const { check, validationResult} = require('express-validator');
+const enviarEmail = require('../handlers/emails');
 
 
 exports.formCrearCuenta = (req,res) => {
@@ -34,6 +35,20 @@ exports.crearNuevaCuenta = async (req,res) => {
     try {
         // Sí no hay errores de validacion (Express y Sequelize) crea el Usuario
         await Usuarios.create(usuario);
+
+
+        // URL de confirmacion
+        const url = `http://${req.headers.host}/confirmar-cuenta/${usuario.email}`;
+
+
+        // Enviar email de confirmación
+        await enviarEmail.enviarEmail({
+            usuario,
+            url, 
+            subject : 'Confirma tu cuenta de Meeti',
+            archivo : 'confirmar-cuenta'
+        });
+
         req.flash('exito', 'Hemos enviado un E-mail, confirma tu cuenta');
         res.redirect('/iniciar-sesion'); 
 

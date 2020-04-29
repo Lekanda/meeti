@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 const db = require('../config/db');
 const bcrypt = require('bcrypt-nodejs');
 
+
 const Usuarios = db.define('usuarios', {
     id: {
         type: Sequelize.INTEGER,
@@ -14,11 +15,21 @@ const Usuarios = db.define('usuarios', {
         type: Sequelize.STRING(30),
         allowNull: false,
         validate: {
-            isEmail: { msg : 'Agrega un correo valido'}
-        },
-        unique : {
-            args: true,
-            msg: 'eMail Registrado'
+            isEmail: { msg : 'Agrega correo valido'},
+            // notEmpty: { msg : 'Correo Obligatorio'},
+            isUnique: function (value,next) {
+                var self = this;
+                Usuarios.findOne({where: {email: value}})
+                    .then(function (usuario) {
+                        if (usuario && self.id !== usuario.id) {
+                            return next('El eMail ya existe');
+                        }
+                        return next();
+                    })
+                    .catch(function (err) {
+                        return next(err);
+                    });
+            }
         }
     },
     password: {
@@ -26,7 +37,7 @@ const Usuarios = db.define('usuarios', {
             allowNull: false,
             validate: {
                 notEmpty: {
-                    msg: 'El Password no puede ir vacio'
+                    msg: 'El Password no  vacio'
                 }
             }
     },

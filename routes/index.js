@@ -24,7 +24,10 @@ module.exports = function() {
     
     
     // Panel de adminstracion
-    router.get('/administracion', adminController.panelAdministracion);
+    router.get('/administracion', 
+        authController.usuarioAutenticado,
+        adminController.panelAdministracion
+    );
     
 
 

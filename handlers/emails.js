@@ -18,7 +18,7 @@ exports.enviarEmail = async(opciones) => {
     console.log(opciones);
     
     // leer el archivo para el mail
-    const archivo = __dirname + `../views/${opciones.archivo}.ejs`;
+    const archivo = __dirname + `/../views/emails/${opciones.archivo}.ejs`;
 
     // compilarlo
     const compilado = ejs.compile(fs.readFileSync(archivo, 'utf8'));
@@ -27,17 +27,14 @@ exports.enviarEmail = async(opciones) => {
     const html = compilado({ url: opciones.url });
 
     // configurar las opciones del email
-
-
     const opcionesEmail = {
-        from: 'devJobs <no-reply@devjobs.com>',
+        from: 'Meeti <no-reply@meeti.com>',
         to: opciones.usuario.email,
         subject: opciones.subject,
-        template: opciones.archivo,
-        context: {
-            resetUrl: opciones.resetUrl
-        }
+        html
     }
-    const sendMail = util.promisify(transport.sendMail, transport);
-    return sendMail.call(transport, opcionesEmail);
+
+    // Enviar el eMail
+    const sendEmail = util.promisify(transport.sendMail, transport);
+    return sendEmail.call(transport, opcionesEmail);
 }

@@ -17,6 +17,16 @@ let transport = nodemailer.createTransport({
 exports.enviarEmail = async(opciones) => {
     console.log(opciones);
     
+    // leer el archivo para el mail
+    const archivo = __dirname + `../views/${opciones.archivo}.ejs`
+
+    // compilarlo
+
+    // crear el HTML
+
+    // configurar las opciones del email
+
+
     const opcionesEmail = {
         from: 'devJobs <no-reply@devjobs.com>',
         to: opciones.usuario.email,

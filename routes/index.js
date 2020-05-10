@@ -4,6 +4,7 @@ const router = express.Router();
 const homeController = require('../controllers/homeController');
 const usuariosController = require('../controllers/usuariosController');
 const authController = require('../controllers/authController');
+const adminController = require('../controllers/adminController');
 
 
 module.exports = function() {
@@ -20,6 +21,11 @@ module.exports = function() {
     // Ruta Iniciar Sesion
     router.get('/iniciar-sesion', usuariosController.formIniciarSesion);
     router.post('/iniciar-sesion', authController.autenticarUsuario);
+    
+    
+    // Panel de adminstracion
+    router.get('/administracion', adminController.panelAdministracion);
+    
 
 
     return router;

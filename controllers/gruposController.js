@@ -45,8 +45,6 @@ exports.crearGrupo = async (req,res) => {
     body('nombre');
     body('url');
 
-    
-    
     const grupo = req.body;
     // console.log(grupo);
 

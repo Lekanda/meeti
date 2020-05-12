@@ -89,3 +89,14 @@ exports.crearGrupo = async (req,res) => {
         res.redirect('/nuevo-grupo');
     }
 }
+
+
+exports.formEditarGrupo = async (req,res) => {
+    const grupo = await Grupos.findByPk(req.params.grupoId);
+    // console.log(grupo);
+    res.render('editar-grupo', {
+        nombrePagina: `Editar Grupo: ${grupo.nombre}`,
+        grupo
+    })
+    
+}

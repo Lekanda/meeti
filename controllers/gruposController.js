@@ -15,7 +15,16 @@ const configuracionMulter = {
             const extension = file.mimetype.split('/')[1];
             next(null, `${shortid.generate()}.${extension}`);
         }
-    })
+    }),
+    fileFilter(req,file,next) {
+        if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+            // El formato de imagen es valido
+            next(null, true);
+        }else{
+            // El Formato de imagen no es valido
+            next(new Error('Formato no valido', false));
+        }
+    }
 }
 const upload = multer(configuracionMulter).single('imagen');
 
@@ -29,14 +38,12 @@ exports.subirImagen = (req,res,next)=> {
                 }else {
                     req.flash('error', error.message);
                 }
-                res.redirect('back');
-                return;
-            }else{
-                next();
+            }else if(error.hasOwnProperty('message')){
+                req.flash('error', error.message);
             }
-            
-            //TODO Manejar errores
-        }else {
+            res.redirect('back');
+            return;
+        }else{
             next();
         }
     })
@@ -64,8 +71,10 @@ exports.crearGrupo = async (req,res) => {
     // Almacena la categoria como unica categoria de grupo (solo puede tener una)
     // grupo.categoriaId = req.body.categoria;
 
-    // leer la imagen
-    grupo.imagen = req.file.filename;
+    // leer la imagen, Sí hay imagen que asignar
+    if(req.file) {
+        grupo.imagen = req.file.filename;
+    }
 
     try {
         // Almacenar en la DB

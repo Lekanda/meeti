@@ -206,3 +206,38 @@ exports.formEliminarGrupo = async (req,res,next) => {
         nombrePagina : `Eliminar grupo : ${grupo.nombre} `
     });
 }
+
+// POST a eliminar grupo y imagen
+exports.eliminarGrupo = async (req,res,next) => {
+    const grupo = await Grupos.findOne({ where : { id : req.params.grupoId, usuarioId : req.user.id}});
+
+    if (!grupo) {
+        req.flash('error', 'Operacion no valida');
+        res.redirect('/administracion');
+        return next();
+    }
+    // console.log(grupo.imagen);
+
+    // Sí hay una imagen eliminarla
+    if(grupo.imagen) {
+        const imagenAnterioPath = __dirname + `/../public/uploads/grupos/${grupo.imagen}`;
+
+        fs.unlink( imagenAnterioPath, (error) => {
+            if(error) {
+                console.log(error);
+            }
+            return;
+        });
+    }
+
+    // Eliminar el grupo 
+    await Grupos.destroy({
+        where: {
+            id: req.params.grupoId
+        }
+    });
+
+    // Redireccionar al usuario
+    req.flash('exito', ' Se borro el Grupo');
+    res.redirect('/administracion');
+}

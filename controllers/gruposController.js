@@ -131,5 +131,16 @@ exports.editarGrupo = async (req,res, next) => {
     await grupo.save();// Guarda en la DB
     req.flash('exito', 'Se ha editado el grupo correctamente');
     res.redirect('/administracion');
+}
 
+
+// Muestra el formulario para editar la imagen
+exports.formEditarImagen = async (req,res,next) => {
+    const grupo = await Grupos.findByPk(req.params.grupoId);
+    // console.log(grupo);
+    res.render('imagen-grupo',{
+        nombrePagina: `Editar Imagen Grupo: ${grupo.nombre}`,
+        grupo
+    });
+    
 }

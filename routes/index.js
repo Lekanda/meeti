@@ -18,7 +18,6 @@ module.exports = function() {
     router.get('/confirmar-cuenta/:correo', usuariosController.confirmarCuenta);
 
     
-    
     // Ruta Iniciar Sesion
     router.get('/iniciar-sesion', usuariosController.formIniciarSesion);
     router.post('/iniciar-sesion', authController.autenticarUsuario);
@@ -57,12 +56,17 @@ module.exports = function() {
         gruposController.formEditarImagen
     );
     router.post('/imagen-grupo/:grupoId', 
-        authController.usuarioAutenticado,
-        gruposController.subirImagen,
-        gruposController.editarImagen
+    authController.usuarioAutenticado,
+    gruposController.subirImagen,
+    gruposController.editarImagen
     );
     
     
+    // Eliminar grupos(imagen tambien)
+    router.get('/eliminar-grupo/:grupoId', 
+        authController.usuarioAutenticado,
+        gruposController.formEliminarGrupo
+    );
 
 
     return router;

@@ -190,3 +190,19 @@ exports.editarImagen = async(req,res,next) => {
     req.flash('exito', 'Imagen actualizada');
     res.redirect('/administracion');
 }
+
+
+// Formulario para eliminar un grupo
+exports.formEliminarGrupo = async (req,res,next) => {
+    const grupo = await Grupos.findOne({ where : { id : req.params.grupoId, usuarioId : req.user.id}});
+
+    if (!grupo) {
+        req.flash('error', 'Operacion no valida');
+        res.redirect('/administracion');
+        return next();
+    }
+    // Todo bien, ejecutar la vista
+    res.render('eliminar-grupo', {
+        nombrePagina : `Eliminar grupo : ${grupo.nombre} `
+    });
+}

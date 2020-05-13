@@ -3,6 +3,8 @@ const Grupos = require('../models/Grupos');
 const multer = require('multer');
 const shortid = require('shortid');
 const { body, validationResult } = require('express-validator');
+const fs = require('fs');
+
 
 // ****************MULTER*********************
 const configuracionMulter = {
@@ -135,12 +137,56 @@ exports.editarGrupo = async (req,res, next) => {
 
 
 // Muestra el formulario para editar la imagen
-exports.formEditarImagen = async (req,res,next) => {
-    const grupo = await Grupos.findByPk(req.params.grupoId);
+exports.formEditarImagen = async (req,res) => {
+    const grupo = await Grupos.findOne({ where : {id : req.params.grupoId , usuarioId : req.user.id}});
     // console.log(grupo);
     res.render('imagen-grupo',{
         nombrePagina: `Editar Imagen Grupo: ${grupo.nombre}`,
         grupo
     });
-    
+}
+
+
+// Guarda en la DB la imagen actualizada
+exports.editarImagen = async(req,res,next) => {
+    const grupo = await Grupos.findOne({ where : {id : req.params.grupoId , usuarioId : req.user.id}});
+    // El grupo existe y es valido
+    if(!grupo) {
+        req.flash('error', 'Operacion no Valida');
+        res.redirect('/iniciar-sesion');
+        return next();
+    }
+
+    // Verificar que el archivo sea nuevo
+    // if (req.file) {
+    //     console.log(req.file.filename);
+    // }
+
+    // // Revisar que exista un archivo anterior
+    // if (grupo.imagen) {
+    //     console.log(grupo.imagen);
+    // }
+
+    // Sí hay imagen anterior y nueva, borramos la anterior de la DB
+    if (req.file && grupo.imagen) {
+        const imagenAnterioPath = __dirname + `/../public/uploads/grupos/${grupo.imagen}`;
+
+        // Eliminar archivo con filesystem
+        fs.unlink( imagenAnterioPath, (error) => {
+            if(error) {
+                console.log(error);
+            }
+            return;
+        })
+    }
+
+    // Sí hay una imagen nueva almacenar en la DB
+    if (req.file) {
+        grupo.imagen = req.file.filename
+    }
+
+    // Guardar en la DB
+    await grupo.save();
+    req.flash('exito', 'Imagen actualizada');
+    res.redirect('/administracion');
 }

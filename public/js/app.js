@@ -5,7 +5,8 @@ import { OpenStreetMapProvider } from 'leaflet-geosearch';
 const lat = 43.12717;
 const lng = -2.76615;
 const map = L.map('map').setView([lat, lng], 12);
-let marker; // Global por que se usa en varios
+let markers = new L.FeatureGroup().addTo(map);// Contenedor para todos los markers
+let marker; // Es el PIN .Global por que se usa en varios
 
 
 
@@ -25,12 +26,14 @@ function buscarDireccion(e) {
     // console.log(e.target.value);
     if(e.target.value.length > 8) {
         // console.log('Buscando...');
+        // Sí existe un PIN anterior limpiarlo
+        markers.clearLayers();
 
-        // Utilizar el provider
+        // Utilizar el provider y GeoCoder
         const provider = new OpenStreetMapProvider();
         // console.log(provider);
         provider.search({ query: e.target.value }).then((resultado) => {
-            console.log(resultado);
+            // console.log(resultado);
             //Mostrar el mapa
             map.setView(resultado[0].bounds[0], 15);
             // Agregar el Pin
@@ -39,13 +42,20 @@ function buscarDireccion(e) {
                 autoPan: true // Para mover el mapa
             })
             .addTo(map)// Añade el PIN al Mapa
-            .bindPopup(resultado[0].label)
-            .openPopup()
+            .bindPopup(resultado[0].label)// Añadir globo de informacion
+            .openPopup();// Globo de informacion
+
+            // Asignar al contenedor markers
+            markers.addLayer(marker);
+
+            // Detectar movimiento del Marker
+            marker.on('moveend', function(e) {// Coge la posicion final del PIN al moverlo
+                marker = e.target;
+                // console.log(marker.getLatLng());
+                const posicion = marker.getLatLng();
+                map.panTo(new L.LatLng(posicion.lat, posicion.lng));
+                // Centra el mapa al PIN  
+            })
         })
     }
 }
-
-
-// L.marker([43.1272, -2.767]).addTo(map)
-//     .bindPopup('Iturriotz Barrena.<br> Dima Bizkaia.')
-//     .openPopup('prueba');

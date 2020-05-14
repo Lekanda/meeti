@@ -30,31 +30,44 @@ function buscarDireccion(e) {
         markers.clearLayers();
 
         // Utilizar el provider y GeoCoder
+        const geocodeService = L.esri.Geocoding.geocodeService();
         const provider = new OpenStreetMapProvider();
         // console.log(provider);
         provider.search({ query: e.target.value }).then((resultado) => {
-            // console.log(resultado);
-            //Mostrar el mapa
-            map.setView(resultado[0].bounds[0], 15);
-            // Agregar el Pin
-            marker = new L.marker(resultado[0].bounds[0], {
-                draggable: true, // Para mover el PIN
-                autoPan: true // Para mover el mapa
-            })
-            .addTo(map)// Añade el PIN al Mapa
-            .bindPopup(resultado[0].label)// Añadir globo de informacion
-            .openPopup();// Globo de informacion
+            geocodeService.reverse().latlng(resultado[0].bounds[0], 15).run(function(error, result) {
+                console.log(result);
 
-            // Asignar al contenedor markers
-            markers.addLayer(marker);
+                // console.log(resultado);
+                //Mostrar el mapa
+                map.setView(resultado[0].bounds[0], 15);
+                // Agregar el Pin
+                marker = new L.marker(resultado[0].bounds[0], {
+                    draggable: true, // Para mover el PIN
+                    autoPan: true // Para mover el mapa
+                })
+                .addTo(map)// Añade el PIN al Mapa
+                .bindPopup(resultado[0].label)// Añadir Globo de Informacion
+                .openPopup();// Globo de Informacion
 
-            // Detectar movimiento del Marker
-            marker.on('moveend', function(e) {// Coge la posicion final del PIN al moverlo
-                marker = e.target;
-                // console.log(marker.getLatLng());
-                const posicion = marker.getLatLng();
-                map.panTo(new L.LatLng(posicion.lat, posicion.lng));
-                // Centra el mapa al PIN  
+                // Asignar al contenedor Markers(PINes)
+                markers.addLayer(marker);
+
+                // Detectar movimiento del Marker
+                marker.on('moveend', function(e) {// Coge la posicion final del PIN al moverlo
+                    marker = e.target;
+                    // console.log(marker.getLatLng());
+                    const posicion = marker.getLatLng();
+                    map.panTo(new L.LatLng(posicion.lat, posicion.lng));
+                    // Centra el mapa al PIN  
+
+
+                    // Reverse geocoding, cuando el usuario reubica el PIN
+                    geocodeService.reverse().latlng(posicion, 15).run(function(error, result) {
+                        console.log(result);
+                        // Asigna los valores al Popup del Marker
+                        marker.bindPopup(result.address.LongLabel);
+                    });
+                })
             })
         })
     }

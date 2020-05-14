@@ -13,7 +13,7 @@ let marker; // Es el PIN .Global por que se usa en varios
 
 document.addEventListener('DOMContentLoaded', () => {
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.google.com">Lekanda.NET</a> Contribuciones'
+        attribution: '&copy; <a href="https://www.google.com">Lekanda.NET</a> Webs a medida'
     }).addTo(map);
 
     // Buscar la Direccion
@@ -35,6 +35,7 @@ function buscarDireccion(e) {
         // console.log(provider);
         provider.search({ query: e.target.value }).then((resultado) => {
             geocodeService.reverse().latlng(resultado[0].bounds[0], 15).run(function(error, result) {
+                llenarInputs(result);
                 console.log(result);
 
                 // console.log(resultado);
@@ -63,7 +64,8 @@ function buscarDireccion(e) {
 
                     // Reverse geocoding, cuando el usuario reubica el PIN
                     geocodeService.reverse().latlng(posicion, 15).run(function(error, result) {
-                        console.log(result);
+                        // console.log(result);
+                        llenarInputs(result);
                         // Asigna los valores al Popup del Marker
                         marker.bindPopup(result.address.LongLabel);
                     });
@@ -71,4 +73,14 @@ function buscarDireccion(e) {
             })
         })
     }
+}
+
+function llenarInputs(resultado) {
+    // console.log(resultado);
+    document.querySelector('#direccion').value = resultado.address.Address || '';
+    document.querySelector('#ciudad').value = resultado.address.City || '';
+    document.querySelector('#estado').value = resultado.address.Region || '';
+    document.querySelector('#pais').value = resultado.address.CountryCode || '';
+    document.querySelector('#lat').value = resultado.latlng.lat || '';
+    document.querySelector('#lng').value = resultado.latlng.lng || '';
 }

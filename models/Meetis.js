@@ -12,10 +12,10 @@ const Grupos = require('../models/Grupos');
 const Meeti = db.define(
     'meeti', {
         id : {
-            type: Sequelize.UUID,
-            primaryKey: true,
-            allowNull: false,
-            defaultValue: uuidv4()
+            type : Sequelize.UUID,
+            primaryKey : true,
+            allowNull : false,
+            defaultValue : uuidv4()
         },
         titulo : {
             type: Sequelize.STRING,

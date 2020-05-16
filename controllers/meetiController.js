@@ -1,8 +1,8 @@
 const Grupos = require('../models/Grupos');
 const Meeti = require('../models/Meeti');
 
-const { v4: uuidv4 } = require('uuid');
-// const uuid = require('uuid/v4');
+// const { v4: uuidv4 } = require('uuid');
+const uuid = require('uuid/v4');
 
 // Muestra el formulario para nuevos Meetis
 exports.formNuevoMeeti = async (req,res,next) => {
@@ -17,7 +17,8 @@ exports.formNuevoMeeti = async (req,res,next) => {
 exports.crearMeeti = async (req,res,next) => {
     // obtener los datos
     const meeti = req.body;
-
+    console.log(req.body);
+    
     // asignar el usuario
     meeti.usuarioId = req.user.id;
     
@@ -30,7 +31,7 @@ exports.crearMeeti = async (req,res,next) => {
         meeti.cupo = 0;
     }
 
-    meeti.id = uuidv4();
+    // meeti.id = uuid();
     console.log(meeti);
 
     // almacenar en la BD
@@ -45,5 +46,4 @@ exports.crearMeeti = async (req,res,next) => {
         req.flash('error', erroresSequelize);
         res.redirect('/nuevo-meeti');
     }
-    
 }

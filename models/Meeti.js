@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../config/db');
-const { v4: uuidv4 } = require('uuid');
-// const uuid = require('uuid/v4');
+// const { v4: uuidv4 } = require('uuid');
+const uuid = require('uuid/v4');
 
 const slug = require('slug');
 const shortid = require('shortid');
@@ -13,10 +13,9 @@ const Grupos = require('./Grupos');
 const Meeti = db.define(
     'meeti', {
         id : {
-            type : Sequelize.UUID,
+            type : Sequelize.INTEGER,
             primaryKey : true,
-            allowNull : false,
-            defaultValue : uuidv4()
+            autoIncrement : true
         },
         titulo : {
             type: Sequelize.STRING,

@@ -1,12 +1,13 @@
 const Sequelize = require('sequelize');
 const db = require('../config/db');
 const { v4: uuidv4 } = require('uuid');
+// const uuid = require('uuid/v4');
+
 const slug = require('slug');
 const shortid = require('shortid');
 
-const Usuarios = require('../models/Usuarios');
-const Grupos = require('../models/Grupos');
-
+const Usuarios = require('./Usuarios');
+const Grupos = require('./Grupos');
 
 
 const Meeti = db.define(

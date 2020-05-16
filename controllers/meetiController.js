@@ -2,7 +2,7 @@ const Grupos = require('../models/Grupos');
 const Meeti = require('../models/Meeti');
 
 // const { v4: uuidv4 } = require('uuid');
-const uuid = require('uuid/v4');
+// const uuid = require('uuid/v4');
 
 // Muestra el formulario para nuevos Meetis
 exports.formNuevoMeeti = async (req,res,next) => {

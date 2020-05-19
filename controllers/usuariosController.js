@@ -17,11 +17,11 @@ exports.crearNuevaCuenta = async (req,res) => {
 
     //**************Reglas y Sanityze****************
     const rules = [   
-        check('nombre').not().isEmpty().withMessage('El nombre esObligatorio').escape(),
+        check('nombre').not().isEmpty().withMessage('El nombre es obligatorio').escape(),
     
-        check('email').isEmail().normalizeEmail().withMessage('El email valido').escape(),
+        check('email').isEmail().normalizeEmail().withMessage('Poner email valido').escape(),
         
-        check('password').not().isEmpty().withMessage('Password no puede irvacío').escape(),
+        check('password').not().isEmpty().withMessage('Password no puede ir vacío').escape(),
     
         check('confirmar').equals(usuario.password).withMessage('El password es diferente').escape(),
     ];

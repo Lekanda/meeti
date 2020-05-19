@@ -9,34 +9,27 @@
 
     <div class="seccion-admin">
         <h2>Tus Meetis</h2>
+        <% if(meeti.length > 0) { %>
         <ul>
+            <% meeti.forEach(meet => { %> 
             <li>
                 <div class="informacion-admin">
-                    <p class="fecha">Lunes, 22 de Mayo de 2019</p>
+                    <p class="fecha"><%= meet.fecha %> </p>
 
-                    <h3>E-Commerce en Bilbao</h3>
-                    <small>23 Asistentes</small>
+                    <h3><%= meet.titulo %></h3>
+                    <small><%= meet.interesados.length %> Interesados</small>
                 </div>
                 <div class="acciones contenedor-botones">
-                    <a href="#" class="btn btn-verde">Editar</a>
-                    <a href="#" class="btn btn-azul2">Asistentes</a>
-                    <a href="#" class="btn btn-rojo">Eliminar</a>
+                    <a href="/editar-meeti/<%= meet.id %>" class="btn btn-verde">Editar</a>
+                    <a href="/asistentes-meeti/<%= meet.id %>" class="btn btn-azul2">Asistentes</a>
+                    <a href="/eliminar-meeti/<%= meet.id %>" class="btn btn-rojo">Eliminar</a>
                 </div>
             </li>
-            <li>
-                <div class="informacion-admin">
-                    <p class="fecha">Lunes, 27 de Agosto de 2020</p>
-
-                    <h3>E-Commerce en Donosti</h3>
-                    <small>85 Asistentes</small>
-                </div>
-                <div class="acciones contenedor-botones">
-                    <a href="#" class="btn btn-verde">Editar</a>
-                    <a href="#" class="btn btn-azul2">Asistentes</a>
-                    <a href="#" class="btn btn-rojo">Eliminar</a>
-                </div>
-            </li>
+            <% }) %> 
         </ul>
+        <% } else { %>
+            <p>No hay Meetis todavia</p>
+        <% } %> 
     </div>
 
     <div class="seccion-admin">

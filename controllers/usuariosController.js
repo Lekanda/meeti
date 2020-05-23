@@ -140,3 +140,11 @@ exports.editarPerfil = async(req,res,next) => {
     req.flash('exito', 'Cambios en perfil guardados');
     res.redirect('/administracion');
 }
+
+
+// Muestra el formulario para cambiar el Password
+exports.formCambiarPassword = (req,res) => {
+    res.render('cambiar-password', {
+        nombrePagina: 'Cambiar Contraseña'
+    })
+}

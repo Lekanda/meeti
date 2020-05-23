@@ -211,11 +211,6 @@ exports.formEliminarGrupo = async (req,res,next) => {
 exports.eliminarGrupo = async (req,res,next) => {
     const grupo = await Grupos.findOne({ where : { id : req.params.grupoId, usuarioId : req.user.id}});
 
-    if (!grupo) {
-        req.flash('error', 'Operacion no valida');
-        res.redirect('/administracion');
-        return next();
-    }
     // console.log(grupo.imagen);
 
     // Sí hay una imagen eliminarla

@@ -1,5 +1,5 @@
 const Usuarios = require('../models/Usuarios');
-const { check, validationResult} = require('express-validator');
+const { body, check, validationResult} = require('express-validator');
 const enviarEmail = require('../handlers/emails');
 
 
@@ -117,4 +117,26 @@ exports.formEditarPerfil = async(req,res,next) =>  {
         nombrePagina : `Editar Perfil : ${usuario.nombre}`,
         usuario
     })
+}
+
+
+// Almacena en la DB los cambios en el Perfil
+exports.editarPerfil = async(req,res,next) => {
+    const usuario = await Usuarios.findByPk(req.user.id);
+
+    body('nombre');
+    body('email');
+
+    // Leer datos del form
+    const { nombre, descripcion, email } = req.body;
+    
+    // Asignar los valores
+    usuario.nombre = nombre;
+    usuario.descripcion =descripcion;
+    usuario.email = email;
+   
+    // Guardar en la DB
+    await usuario.save();
+    req.flash('exito', 'Cambios en perfil guardados');
+    res.redirect('/administracion');
 }

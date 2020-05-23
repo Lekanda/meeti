@@ -111,10 +111,10 @@ module.exports = function() {
         authController.usuarioAutenticado,
         usuariosController.formEditarPerfil    
     );
-    // router.post('/editar-perfil', 
-    //     authController.usuarioAutenticado,
-    //     meetiController.editarPerfil    
-    // );
+    router.post('/editar-perfil', 
+        authController.usuarioAutenticado,
+        usuariosController.editarPerfil    
+    );
     
 
     return router;

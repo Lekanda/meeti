@@ -148,3 +148,32 @@ exports.formCambiarPassword = (req,res) => {
         nombrePagina: 'Cambiar Contraseña'
     })
 }
+
+
+// Post del formulario para revisar pass anterior y para cambiar password
+exports.cambiarPassword = async (req,res,next) => {
+    const usuario = await Usuarios.findByPk(req.user.id);
+
+    // Verificar que el Password anterior sea correcto
+    if(!usuario.validarPassword(req.body.anterior)){
+        req.flash('error', 'La contraseña antigua es incorrecta');
+        res.redirect('/administracion');
+        return next();
+    }
+
+    // Sí el pass es correcto hashear el nuevo
+    const hash = usuario.hashPassword(req.body.nuevo);
+    console.log(hash);
+    // Asignar el password Hasheado al usuario
+    usuario.password = hash;
+
+
+    // Guardar en la DB
+    await usuario.save();
+
+
+    // Redireccionar
+    req.logout();
+    req.flash('exito', 'Password modificado correctamente, inicia sesion con nueva contraseña');
+    res.redirect('/iniciar-sesion');
+}

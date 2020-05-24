@@ -16,3 +16,11 @@ exports.usuarioAutenticado = (req,res,next) => {
     // Sí no esta Autenticado
     return res.redirect('/iniciar-sesion');
 }
+
+// Cerrar sesion
+exports.cerrarSesion = (req,res,next) => {
+    req.logout();
+    req.flash('exito', 'Sesion Cerrada');
+    res.redirect('/iniciar-sesion');
+    next();
+}

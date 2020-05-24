@@ -24,10 +24,17 @@ module.exports = function() {
     router.post('/iniciar-sesion', authController.autenticarUsuario);
     
     
+    // Cerrar Sesion 
+    router.get('/cerrar-sesion', 
+        authController.usuarioAutenticado,
+        authController.cerrarSesion
+    );
+
+    
     // Panel de adminstracion
     router.get('/administracion', 
-    authController.usuarioAutenticado,
-    adminController.panelAdministracion ,
+        authController.usuarioAutenticado,
+        adminController.panelAdministracion ,
     );
     
     // Nuevos Grupos

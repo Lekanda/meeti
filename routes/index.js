@@ -128,6 +128,16 @@ module.exports = function() {
     );
     
     
+    // Muestra formulario para subir imagenes de perfil de usuario
+    router.get('/imagen-perfil', 
+        authController.usuarioAutenticado,
+        usuariosController.formSubirImgenPerfil
+    );
+    router.post('/imagen-perfil', 
+        authController.usuarioAutenticado,
+        usuariosController.subirImagen,
+        usuariosController.guardarImagenPerfil
+    );
 
     return router;
 }

@@ -2,6 +2,70 @@ const Usuarios = require('../models/Usuarios');
 const { body, check, validationResult} = require('express-validator');
 const enviarEmail = require('../handlers/emails');
 
+const multer = require('multer');
+const shortid = require('shortid');
+const fs = require('fs');
+
+
+
+// ****************MULTER*********************
+const configuracionMulter = {
+    limits : { fileSize : 100000 },// 100KB
+    storage: fileStorage = multer.diskStorage({
+        destination: (req,file, next) => {
+            next(null, __dirname+'/../public/uploads/perfiles/');
+        },
+        filename: (req, file, next) => {
+            const extension = file.mimetype.split('/')[1];
+            next(null, `${shortid.generate()}.${extension}`);
+        }
+    }),
+    fileFilter(req,file,next) {
+        if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+            // El formato de imagen es valido
+            next(null, true);
+        }else{
+            // El Formato de imagen no es valido
+            next(new Error('Formato no valido', false));
+        }
+    }
+}
+const upload = multer(configuracionMulter).single('imagen');
+
+// Sube la imagen al servidor
+exports.subirImagen = (req,res,next)=> {
+    upload(req,res, function(error) {
+        if(error) {
+            if (error instanceof multer.MulterError) {
+                if (error.code === 'LIMIT_FILE_SIZE') {
+                    req.flash('error', 'Tamaño de imagen muy grande . Max 100 KB');
+                }else {
+                    req.flash('error', error.message);
+                }
+            }else if(error.hasOwnProperty('message')){
+                req.flash('error', error.message);
+            }
+            res.redirect('back');
+            return;
+        }else{
+            next();
+        }
+    })
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 exports.formCrearCuenta = (req,res) => {
     res.render('crear-cuenta', {
@@ -176,4 +240,47 @@ exports.cambiarPassword = async (req,res,next) => {
     req.logout();
     req.flash('exito', 'Password modificado correctamente, inicia sesion con nueva contraseña');
     res.redirect('/iniciar-sesion');
+}
+
+// Muestra el formulario para subir una imagen
+exports.formSubirImgenPerfil = async (req,res,next)=> {
+    const usuario = await Usuarios.findByPk(req.user.id);
+
+
+    // Mostrar la vista
+    res.render('imagen-perfil', {
+        nombrePagina: 'Subir imagen Perfil',
+        usuario
+    });
+
+}
+
+
+// Guarda la imagen nueva , elimina la anterior( Sí hay) y guarda el registro en la DB
+exports.guardarImagenPerfil = async (req,res) => {
+    const usuario = await Usuarios.findByPk(req.user.id);
+
+    // Sí hay imagen anterior y nueva, borramos la anterior de la DB
+    if (req.file && usuario.imagen) {
+        const imagenAnterioPath = __dirname + `/../public/uploads/perfiles/${usuario.imagen}`;
+
+        // Eliminar archivo con filesystem
+        fs.unlink( imagenAnterioPath, (error) => {
+            if(error) {
+                console.log(error);
+            }
+            return;
+        })
+    }
+
+    // Almacenar la nueva Imagen
+    if (req.file) {
+        usuario.imagen = req.file.filename
+    }
+
+    // Almacenar en la DB y redireccionar
+    await usuario.save();
+    req.flash('exito', 'Imagen actualizada');
+    res.redirect('/administracion');
+
 }

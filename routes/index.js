@@ -10,6 +10,10 @@ const meetiController = require('../controllers/meetiController');
 
 
 module.exports = function() {
+/************************** AREA PUBLICA ******************************/
+// No se requiere una cuenta para acceder a el 
+
+
     // Ruta para el home
     router.get('/', homeController.home);
 
@@ -31,6 +35,16 @@ module.exports = function() {
     );
 
     
+
+
+
+/************************** AREA PRIVADA*******************************/
+// Se requiere una cuenta para acceder a el 
+
+
+
+
+
     // Panel de adminstracion
     router.get('/administracion', 
         authController.usuarioAutenticado,

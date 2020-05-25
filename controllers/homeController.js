@@ -31,7 +31,8 @@ exports.home = async (req,res) => {
                 attributes : ['nombre', 'imagen']
             }
         ]
-    }) );
+    }) 
+    );
 
 
 
@@ -47,7 +48,8 @@ exports.home = async (req,res) => {
     res.render('home', {
         nombrePagina:'Inicio',
         categorias,
-        meetis
+        meetis,
+        moment
     });
 };
 

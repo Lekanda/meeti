@@ -1,23 +1,27 @@
 <div class="encabezado-evento">
     <div class="contenedor">
         <div class="resumen-evento">
-            <h1>Nombre Evento</h1>
+            <!-- <%= JSON.stringify(meeti)  %>  -->
+            <h1><%= meeti.titulo %> </h1>
             <div class="info-autor">
                 <div class="imagen">
-                    <img src="">
+                    <% if(meeti.usuario.imagen) %> 
+                    <img src="/uploads/perfiles/<%= meeti.usuario.imagen %>">
                 </div>
                 <div class="informacion">
                     <p>Organizado por : </p>
                     <p class="autor">
-                        <a href="">Andres</a> Creador de : 
-                        <a href="">Node Europa</a>
+                        <a href="/usuarios/<%= meeti.usuario.id  %>"><%= meeti.usuario.nombre %> </a> creador de : 
+                        <a href="/grupos//<%= meeti.grupo.id %> "><%= meeti.grupo.nombre %></a>
                     </p>
                 </div>
             </div><!--.Info autor-->
         </div><!--.Info resumen evento -->
         <div class="pregunta-asistencia">
-            <p>Asistiras?</p>
-            <a href="#" class="btn btn-azul" >Si</a>
+            <% if(usuario.id) { %>
+                <p>Asistiras?</p>
+                <a href="#" class="btn btn-azul" >Si</a>
+            <% } %> 
         </div>
     </div>
 </div>
@@ -26,16 +30,16 @@
     <div class="contenedor">
         <div class="informacion-evento">
             <div class="decripcion">
-              <!-- Imagen del Meeti -->
+                <img src="/uploads/grupos/<%= meeti.grupo.imagen %> " >
 
 
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo quas dolorum minus soluta sint. Velit beatae, tenetur, eius optio doloremque iure porro fugit, reiciendis assumenda perspiciatis facilis maiores nobis? Alias.</p>
+                <p><%- meeti.descripcion %> </p>
             </div><!-- descripcion-->
 
             <div class="asistentes">
                 <div class="titulo">
-                    <h3>Asistentes</h3>
-                    <a href="·">Ver todo</a>
+                    <h3><%= meeti.interesados.length %> Asistentes</h3>
+                    <a href="/asistentes/<%= meeti.slug %> ">Ver Todos</a>
                 </div>
             </div> <!--asistentes-->
 
@@ -78,10 +82,12 @@
 
         <aside class="informacion">
             <div class="fecha">
-                <p>30 de Agosto 2020; 20:30 horas</p>
+                <% moment.locale('es'); %> 
+                <% const fecha = meeti.fecha + ' ' + meeti.hora; %> 
+                <p><%= moment(fecha).format('LLLL') %> Horas</p>
             </div>
             <div class="ubicacion">
-                <p>Avenida Siempre Viva</p>
+                <p><%= meeti.direccion %>, <%= meeti.ciudad %> , <%= meeti.estado %>, <%= meeti.pais  %>  </p>
             </div>
         </aside>
     </div>

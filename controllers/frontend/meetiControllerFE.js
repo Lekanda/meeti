@@ -2,6 +2,8 @@ const Meeti = require('../../models/Meeti');
 const Grupos = require('../../models/Grupos');
 const Usuarios = require('../../models/Usuarios');
 
+const moment = require('moment');
+
 
 
 exports.mostrarMeeti = async (req,res) => {
@@ -28,7 +30,8 @@ exports.mostrarMeeti = async (req,res) => {
 
     // Pasar el resultado a la vista
     res.render('mostrar-meeti', {
-        nombrePagina: `Meeti : ${meeti.titulo}`,
-        meeti
+        nombrePagina: `${meeti.titulo}`,
+        meeti,
+        moment
     })
 }

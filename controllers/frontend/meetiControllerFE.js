@@ -35,3 +35,10 @@ exports.mostrarMeeti = async (req,res) => {
         moment
     })
 }
+
+
+//Confirma o cancela sí el usuario asistira a un Meeti
+exports.confirmarAsistencia = async(req,res) => {
+    console.log('Hola');
+    
+}

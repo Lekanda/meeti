@@ -638,3 +638,11 @@ aside img {
 .buscador {
     width: 100px;
 }
+/* #map {
+    height: 500px;
+    width: 100%;
+} */
+#ubicacion-meeti {
+    height: 500px;
+    width: 86%;
+}

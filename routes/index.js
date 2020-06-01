@@ -27,6 +27,12 @@ module.exports = function() {
     router.post('/confirmar-asistencia/:slug',
         meetiControllerFE.confirmarAsistencia
     )
+    
+    //Muestra Asistentes al Meeti
+    router.get('/asistentes/:slug',
+        meetiControllerFE.mostrarAsistentes
+    )
+    
 
     // Rutas para Crear y Confirmar Cuentas
     router.get('/crear-cuenta', usuariosController.formCrearCuenta);

@@ -5,14 +5,17 @@
             <h1><%= meeti.titulo %> </h1>
             <div class="info-autor">
                 <div class="imagen">
-                    <% if(meeti.usuario.imagen) %> 
-                    <img src="/uploads/perfiles/<%= meeti.usuario.imagen %>">
+                    <% if(meeti.usuario.imagen) { %> 
+                        <img src="/uploads/perfiles/<%= meeti.usuario.imagen %>">
+                    <% } %> 
                 </div>
                 <div class="informacion">
                     <p>Organizado por : </p>
                     <p class="autor">
                         <a href="/usuarios/<%= meeti.usuario.id  %>"><%= meeti.usuario.nombre %> </a> creador de : 
-                        <a href="/grupos//<%= meeti.grupo.id %> "><%= meeti.grupo.nombre %></a>
+                        <a href="/grupos/<%= meeti.grupo.id %>">
+                            <%= meeti.grupo.nombre %>
+                        </a>
                     </p>
                 </div>
             </div><!--.Info autor-->

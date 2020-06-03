@@ -18,7 +18,7 @@ require('./models/Categorias');
 require('./models/Grupos');
 require('./models/Meeti');
 db.sync()
-    .then(() => console.log('Conectado a la DB'))
+    .then(() => console.log('Conectado a la Base de Datos de Meeti'))
     .catch(error => console.log(error));
 
 

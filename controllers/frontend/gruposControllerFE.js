@@ -4,8 +4,8 @@ const moment = require('moment');
 
 exports.mostrarGrupo = async(req,res,next) => {
     const consultas = [];
-    consultas.push(Grupos.finOne({ where : { id : req.params.id }}));
-    consultas.push(Meeti.finAll({ where : { grupoId : req.params.id },
+    consultas.push(Grupos.findOne({ where : { id : req.params.id }}));
+    consultas.push(Meeti.findAll({ where : { grupoId : req.params.id },
                                   order : [
                                       ['fecha', 'ASC', ]
                                   ]
@@ -23,7 +23,8 @@ exports.mostrarGrupo = async(req,res,next) => {
     res.render('mostrar-grupo', {
         nombrePagina: `Grupo ${grupo.nombre}`,
         grupo,
-        meetis
-    })
+        meetis,
+        moment
+    });
 
 }

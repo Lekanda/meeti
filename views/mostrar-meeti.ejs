@@ -60,22 +60,28 @@
 
             <div class="comentarios">
                 <h2>Comentarios</h2>
-                <div class="comentario">
-                    <div class="imagen"></div>
-                    <div class="texto">
-                        <p>Hola</p>
-                        <p>Escrito por: <span>Andres</span></p>
-                        <input type="button" value="Eliminar" class="btn btn-azul">
+                <% if (comentarios.length > 0) { %> 
+                    <% comentarios.forEach(comentario => { %> 
+                    <div class="comentario">
+                        <div class="imagen">
+                            <% if(comentario.usuario.imagen) { %>
+                                <img src="/uploads/perfiles/<%= comentario.usuario.imagen %>" >
+                            <% } %> 
+                        </div>
+                        <div class="texto">
+                            <p><%= comentario.mensaje %></p>
+                            <p>Escrito por: 
+                                <a href="/usuarios/<%= comentario.usuario.id %>">
+                                    <%= comentario.usuario.nombre %> 
+                                </a>
+                            </p>
+                            <input type="button" value="Eliminar" class="btn btn-azul">
+                        </div>
                     </div>
-                </div>
-                <div class="comentario">
-                    <div class="imagen"></div>
-                    <div class="texto">
-                        <p>Hola</p>
-                        <p>Escrito por: <span>Andres</span></p>
-                        <input type="button" value="Eliminar" class="btn btn-azul">
-                    </div>
-                </div>
+                    <% }) %> 
+                <% } else { %>
+                    <p>No hay comentarios todavia</p>
+                <% } %> 
 
                 <!--Formulario de comentarios-->
                 <% if (usuario.id) { %> 

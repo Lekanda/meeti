@@ -2,6 +2,7 @@ const Meeti = require('../../models/Meeti');
 const Grupos = require('../../models/Grupos');
 const Usuarios = require('../../models/Usuarios');
 const Categorias = require('../../models/Categorias');
+const Comentarios = require('../../models/Comentarios');
 
 const Sequelize = require('sequelize');
 
@@ -30,11 +31,23 @@ exports.mostrarMeeti = async (req,res) => {
         res.redirect('/')
     }
 
+    //2ª consulta. Despues de verificar que existe el Meeti
+    const comentarios = await Comentarios.findAll({
+        where: { meetiId : meeti.id },
+        include: [
+            {
+                model: Usuarios,
+                attributes: ['id', 'nombre', 'imagen']
+            }
+        ]
+    });
+
     // Pasar el resultado a la vista
     res.render('mostrar-meeti', {
         nombrePagina: `${meeti.titulo}`,
         meeti,
-        moment
+        moment,
+        comentarios
     })
 }
 

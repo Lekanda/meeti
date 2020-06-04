@@ -78,8 +78,8 @@
                 </div>
 
                 <!--Formulario de comentarios-->
-
-                    <form action="#" class="default-form comentarios">
+                <% if (usuario.id) { %> 
+                    <form action="/meeti/<%= meeti.id %>" method="POST" class="default-form comentarios">
                         <legend>Agrega un comentario</legend>
                         <div class="campo">
                             <label>Comentario</label>
@@ -89,7 +89,9 @@
                             <input type="submit" value="Enviar" class="btn btn-rosa">
                         </div>
                     </form>
-
+                <% } else { %>
+                    <p>Inicia Sesion para agregar un comentario</p>
+                <% } %> 
                 <!--/Formulario de comentarios-->
 
             </div><!--Comentarios-->

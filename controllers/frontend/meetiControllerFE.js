@@ -1,6 +1,7 @@
 const Meeti = require('../../models/Meeti');
 const Grupos = require('../../models/Grupos');
 const Usuarios = require('../../models/Usuarios');
+const Categorias = require('../../models/Categorias');
 
 const Sequelize = require('sequelize');
 
@@ -87,5 +88,34 @@ exports.mostrarAsistentes = async (req,res) => {
         asistentes
     })
     
+    
+}
+
+
+// Muestra los Meetis agrupados por categoria
+exports.mostrarCategoria = async (req,res,next) => {
+    const categoria = await Categorias.findOne({ 
+        attributes : ['id','nombre'],
+        where : { slug : req.params.categoria }
+    });
+
+    const Meetis = await Meeti.findAll({
+        include : [
+            {
+                model : Grupos,
+                where : {categoriaId : categoria.id}
+            },
+            {
+                model : Usuarios
+            }
+        ]
+    });
+
+    // Pasar a la vista
+    res.render('categoria', {
+        nombrePagina : `Categoria ${categoria.nombre}`,
+        Meetis,
+        moment
+    })
     
 }

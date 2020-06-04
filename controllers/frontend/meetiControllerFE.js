@@ -99,7 +99,11 @@ exports.mostrarCategoria = async (req,res,next) => {
         where : { slug : req.params.categoria }
     });
 
-    const Meetis = await Meeti.findAll({
+    const meetis = await Meeti.findAll({
+        order : [
+            ['fecha', 'ASC'],
+            ['hora', 'ASC']
+        ],
         include : [
             {
                 model : Grupos,
@@ -114,7 +118,7 @@ exports.mostrarCategoria = async (req,res,next) => {
     // Pasar a la vista
     res.render('categoria', {
         nombrePagina : `Categoria ${categoria.nombre}`,
-        Meetis,
+        meetis,
         moment
     })
     

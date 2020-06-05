@@ -811,3 +811,8 @@ div.asistentes h1,
         flex: 1;
     }
 }
+
+.centrar {
+    align-items: center;
+    justify-content: center;
+}

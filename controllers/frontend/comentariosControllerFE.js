@@ -20,3 +20,9 @@ exports.agregarComentario = async ( req,res,next)=> {
 
     
 }
+
+
+// Elimina un comentario de la DB
+exports.eliminarComentario = async(req,res,next) => {
+    res.send('Hola');
+}

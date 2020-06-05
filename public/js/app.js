@@ -2,6 +2,7 @@
 // GIST de Leaflet https://gist.github.com/Lekanda/1c39b4e5752395939f751d7b36777762
 import { OpenStreetMapProvider } from 'leaflet-geosearch';
 import asistencia from './asistencia';
+import eliminarComentario from './eliminarComentario';
 
 // Obtener valores de la DB
 /**"43.2574172087374"    */

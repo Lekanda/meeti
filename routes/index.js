@@ -38,6 +38,11 @@ module.exports = function() {
     
     );
 
+    // Elimina comentarios del Meeti
+    router.post('/eliminar-comentario',
+    comentariosControllerFE.eliminarComentario
+    );
+
     
     //Muestra Asistentes al Meeti
     router.get('/asistentes/:slug',

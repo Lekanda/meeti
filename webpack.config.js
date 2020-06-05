@@ -10,6 +10,7 @@ module.exports = {
     module: {
         rules: [    
         {
+            // compact: false,
             test: /\.m?js$/,
             use: {
             loader: 'babel-loader',

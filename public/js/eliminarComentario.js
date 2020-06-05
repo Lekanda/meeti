@@ -29,25 +29,26 @@ function eliminarComentario(e) {
 
             // Tomar el id del comentario
             const comentarioId = this.children[0].value;
-            console.log(comentarioId);
+            // console.log(comentarioId);
 
             // Crear el objeto
             const datos = {
                 comentarioId
-            }
+            };
 
             // Ejecutar Axios y pasar los datos
-
-
-            axios.post(this.action, datos) // El 1º la URL; el 2º los datos que se pasan
+            axios.post(this.action, datos)
                 .then((respuesta) => {
-                    console.log(respuesta);
+                    Swal.fire('Eliminado', respuesta.data, 'success');
+                    // Eliminar del DOM
+                    this.parentElement.parentElement.remove();
+                })
+                .catch(error => {
+                    console.log(error.response);
+                    if(error.response.status === 403 || error.response.status === 404) {
+                        Swal.fire('Error', error.response.data, 'error');
+                    }
                 });
-            Swal.fire(
-                'Borrado!',
-                'Tu comentario ha sido borrado.',
-                'success'
-            )
-    }
-    })
+        }
+    });
 }

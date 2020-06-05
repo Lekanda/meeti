@@ -35,16 +35,19 @@ exports.eliminarComentario = async(req,res,next) => {
     
     // Verificar sí existe el comentario
     if(!comentario) {
-        res.send('Accion no valida');
+        res.status(404).send('Accion no valida');
         return next();
     }
 
     //Verificar que quien lo borra sea el creador
     if(comentario.usuarioId === req.user.id) {
-        res.send(' Si es la persona correcta la que quiere borrar el comentario');
+        await Comentarios.destroy({ where : {
+            id : comentario.id
+        }});
+        res.status(200).send('Eliminado Correctamente....');
         return next();
     } else {
-        res.send('Te crees Hacker?');
+        res.status(403).send('Accion no valida');
         return next();
     }
 }

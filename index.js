@@ -81,7 +81,11 @@ app.use((req,res,next) => {
 /*************Rutas*****************/
 app.use('/', routes());
 
+// Leer el Host y el Puerto
+const host = process.env.HOST || '0.0.0.0';
+const port = process.env.PORT || 7000;
+
 /*********Puerto de escucha************/
-app.listen(process.env.PORT, () => {
+app.listen(port, host,  () => {
     console.log('Servidor Express en Marcha');
 });
